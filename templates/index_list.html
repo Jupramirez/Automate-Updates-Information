@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index of /media/images</title>
+</head>
+<body>
+    <h1>Index of /media/images</h1>
+    <hr>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Image</th> <th>Name</th>
+            <th>Weight</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fruit in fruits %}
+        <tr>
+            <td>
+                <img src="{{ url_for('serve_image', filename=fruit.image_url) }}" 
+                     width="100" alt="{{ fruit.name }}">
+            </td>
+            <td>{{ fruit.name }}</td>
+            <td>{{ fruit.weight }} lbs</td>
+            <td>{{ fruit.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <hr>
+    <address>Flask Server at localhost Port 5000</address>
+</body>
+</html>

@@ -6,12 +6,16 @@ WORKDIR /app
 
 # Copy the requirements file into the container
 COPY requirements.txt .
-
-# Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# 5. Create the uploads directory inside the container
+RUN mkdir -p static/uploads
+
+# 6. Inform Docker that the container listens on port 5000
+EXPOSE 5000
 
 # Copy the rest of your application code
 COPY . .
 
-# Command to run your script (replace 'main.py' with your script name)
-CMD ["python", "main.py"]
+# 7. Define the command to run your app
+CMD ["python", "app.py"]
