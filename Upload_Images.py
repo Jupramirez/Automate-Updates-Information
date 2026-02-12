@@ -6,6 +6,14 @@ import os
 import time
 from Utils.ParsingDescription import parse_description
 from reports import generate_report
+from report_email import generate_email, send_email
+from dotenv import load_dotenv
+load_dotenv()
+
+
+gmail_user = os.getenv("EMAIL_USER")
+gmail_recipient = os.getenv("EMAIL_RECIPIENT")
+
 
 def Upload_image_to_server(folder_path, server_url):
     if not os.path.exists(folder_path):
@@ -54,10 +62,25 @@ def Upload_image_to_server(folder_path, server_url):
                 print(f"⚠️ Warning: Found {filename} but no matching image {image_name}")
     today = date.today().strftime("%B %d, %Y")
     generate_report(
-        "/tmp/processed.pdf", 
+        "processed.pdf", 
         f"Processed Update on {today}", 
         table_rows
     )
+
+    # Prepare and send the email
+    subject = "Fruit Store Automation Report"
+    body = "The fruit catalog has been updated. Please find the PDF report attached."
+    attachment = "processed.pdf"
+    msg = generate_email(gmail_user, gmail_recipient, subject, body, attachment)
+
+    try:
+        send_email(msg)
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"❌ Error sending email: {e}")
+
+
+
 if __name__ == "__main__":
     # Correct path to your folder
     target_folder = 'Fruit_Images' 
